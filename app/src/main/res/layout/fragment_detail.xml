@@ -1,0 +1,88 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    tools:context="com.example.sean.popularmovies.DetailFragment"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ratingLabel"
+        android:id="@+id/detailTitle"
+        android:layout_gravity="end"
+        android:textSize="21sp"
+        android:textStyle="normal|bold"
+        android:gravity="center"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/detailPoster"
+        android:layout_toStartOf="@+id/detailPoster"
+        android:layout_above="@+id/detailRating" />
+
+    <TextView
+        android:text="@string/releaseDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/detailReleaseDate"
+        android:textSize="14sp"
+        android:layout_alignBottom="@+id/detailPoster"
+        android:layout_alignParentLeft="true"
+        android:textStyle="normal|bold" />
+
+    <TextView
+        android:text="@string/ratingLabel"
+        android:layout_height="wrap_content"
+        android:id="@+id/detailRating"
+        android:layout_above="@+id/detailReleaseDate"
+        android:layout_alignRight="@+id/detailReleaseDate"
+        android:layout_alignLeft="@+id/detailReleaseDate"
+        android:layout_width="wrap_content"
+        android:textStyle="normal|bold" />
+
+
+    <ImageView
+        android:layout_width="172dp"
+        android:layout_height="214dp"
+        app:srcCompat="@drawable/movie_icon"
+        android:id="@+id/detailPoster"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" />
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/detailPlotValue"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/detailPlot"
+        android:layout_alignParentBottom="true" />
+
+    <TextView
+        android:text="@string/plotLabel"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/detailReleaseDate"
+        android:id="@+id/detailPlot"
+        android:textStyle="normal|bold" />
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignRight="@+id/detailReleaseDateValue"
+        android:layout_alignLeft="@+id/detailReleaseDateValue"
+        android:layout_above="@+id/detailReleaseDateValue"
+        android:id="@+id/detailRatingValue" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/detailPoster"
+        android:layout_toLeftOf="@+id/detailPoster"
+        android:id="@+id/detailReleaseDateValue" />
+
+
+</RelativeLayout>
+
