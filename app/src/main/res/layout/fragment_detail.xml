@@ -40,16 +40,16 @@
         android:layout_width="wrap_content"
         android:textStyle="normal|bold" />
 
-
     <ImageView
-        android:layout_width="172dp"
-        android:layout_height="214dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:horizontalSpacing="@dimen/horizontal_spacing"
         app:srcCompat="@drawable/movie_icon"
         android:id="@+id/detailPoster"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true" />
-
-
+        android:layout_alignParentTop="true"
+        android:adjustViewBounds="true"
+        android:cropToPadding="true" />
 
     <TextView
         android:layout_width="match_parent"
@@ -74,15 +74,14 @@
         android:layout_alignRight="@+id/detailReleaseDateValue"
         android:layout_alignLeft="@+id/detailReleaseDateValue"
         android:layout_above="@+id/detailReleaseDateValue"
-        android:id="@+id/detailRatingValue" />
+        android:id="@+id/detailRatingValue"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/detailPoster"
         android:layout_toLeftOf="@+id/detailPoster"
-        android:id="@+id/detailReleaseDateValue" />
-
+        android:id="@+id/detailReleaseDateValue"/>
 
 </RelativeLayout>
 

@@ -1,5 +1,6 @@
 package com.example.sean.popularmovies;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -8,6 +9,7 @@ import android.preference.PreferenceManager;
 
 public class SettingsActivity extends PreferenceActivity
     implements Preference.OnPreferenceChangeListener {
+        Intent intentGoToMain = new Intent();
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -49,10 +51,13 @@ public class SettingsActivity extends PreferenceActivity
             if (prefIndex >= 0) {
                 preference.setSummary(listPreference.getEntries()[prefIndex]);
             }
+
+
         } else {
             // For other preferences, set the summary to the value's simple string representation.
             preference.setSummary(stringValue);
         }
+
         return true;
     }
 }

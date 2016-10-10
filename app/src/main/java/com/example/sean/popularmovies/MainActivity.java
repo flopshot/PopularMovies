@@ -10,6 +10,8 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
     Intent intentSettings = new Intent();
+    Intent intentRestart = new Intent();
+    private SharedPreferences.OnSharedPreferenceChangeListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +19,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         PreferenceManager.setDefaultValues(this, R.xml.pref_settings, false);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        //Setup a shared preference listener for hpwAddress and restart transport
+        listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+                if (key.equals("sort")) {
+                    intentRestart.setClassName(getApplication(), MainActivity.class.getName());
+                    finish();
+                    startActivity(intentRestart);
+                }
+            }
+        };
+
+        prefs.registerOnSharedPreferenceChangeListener(listener);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
