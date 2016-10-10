@@ -6,4 +6,6 @@
     <dimen name="fragment_gridview_col_w">120dp</dimen>
     <dimen name="vertical_spacing">5dp</dimen>
     <dimen name="horizontal_spacing">5dp</dimen>
+    <dimen name="width_detail_poster">172dp</dimen>
+    <dimen name="height_detail_poster">214dp</dimen>
 </resources>

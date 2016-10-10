@@ -1,8 +1,11 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    tools:context="com.example.sean.popularmovies.DetailFragment"
+    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.sean.popularmovies.DetailFragment">
+<RelativeLayout
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
@@ -41,8 +44,8 @@
         android:textStyle="normal|bold" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/width_detail_poster"
+        android:layout_height="@dimen/width_detail_poster"
         android:horizontalSpacing="@dimen/horizontal_spacing"
         app:srcCompat="@drawable/movie_icon"
         android:id="@+id/detailPoster"
@@ -84,4 +87,5 @@
         android:id="@+id/detailReleaseDateValue"/>
 
 </RelativeLayout>
+</ScrollView>
 
