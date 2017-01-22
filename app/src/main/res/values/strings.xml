@@ -1,8 +1,4 @@
 <resources>
-
-    <!--TODO PUT YOUR API KEY HERE-->
-    <string name="api_key"></string>
-
     <string name="app_name">Popular Movies</string>
     <string name="movie_detail">Movie Details</string>
     <string name="action_settings">Settings</string>
