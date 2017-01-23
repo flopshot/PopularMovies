@@ -4,7 +4,9 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-
+/**
+ * Network Checking Class used to check device network status.
+ */
 class CheckNetworking {
     Context context;
 

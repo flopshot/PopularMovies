@@ -2,6 +2,10 @@ package com.example.sean.popularmovies;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class holds the formatting logic to populate the ListItems in gridview of Movie Fragment
+ * Accepts raw JSON string from API and extracts and formats movie details of all movies requested
+ */
 class MovieArrayCreator {
     static List<MovieThumbnail> getMovieArray(String json){
         MovieDataParser movieDataParser = new MovieDataParser();

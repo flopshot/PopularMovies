@@ -5,8 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-//import android.support.v4.app.NavUtils; Removing Back Button in Actionbar as per "Core App Quality Guidelines"
 
+/**
+ * Movie Detail Activity contatins Activity logic for movie in list item that was clicked in
+ * Movie Fragment. Contains a detail Fragment class to display movie details layout
+ */
 public class DetailActivity extends AppCompatActivity {
 
     Intent intent = new Intent();
@@ -16,9 +19,9 @@ public class DetailActivity extends AppCompatActivity {
         Intent intentDetail = getIntent();
         MovieThumbnail movie = intentDetail.getParcelableExtra("movie");
 
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true); Removing Back Button in Actionbar as per "Core App Quality Guidelines"
-
         super.onCreate(savedInstanceState);
+
+        //Start detail fragment for movie detail layout
         DetailFragment detailFragment = new DetailFragment();
         setContentView(R.layout.activity_detail);
         if (savedInstanceState == null) {
@@ -51,12 +54,6 @@ public class DetailActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
-
-//  Removing Back Button in Actionbar as per "Core App Quality Guidelines"
-//        if (id == R.id.home) {
-//            NavUtils.navigateUpFromSameTask(this);
-//            return true;
-//        }
 
         return super.onOptionsItemSelected(item);
     }

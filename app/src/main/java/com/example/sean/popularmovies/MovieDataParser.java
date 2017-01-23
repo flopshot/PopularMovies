@@ -4,6 +4,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * This class is used as a helper/utility class in the MovieArrayCreator class to parse JSON string
+ * of specific movie data values from API.
+ */
 class MovieDataParser{
     String getMoviePlot(String movieJsonStr, int index) {
         try {

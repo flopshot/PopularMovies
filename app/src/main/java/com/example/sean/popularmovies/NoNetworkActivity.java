@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+/**
+ * Simple activity to display "No Network" message when device has no network connectivity
+ */
+
 public class NoNetworkActivity extends AppCompatActivity {
     Intent intentMain = new Intent();
 

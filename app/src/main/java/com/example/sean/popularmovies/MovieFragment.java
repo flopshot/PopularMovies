@@ -19,7 +19,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
+/**
+ * This Fragment contains the main activity listView of Movie thumbnails
+ */
 public class MovieFragment extends Fragment {
     MovieThumbnailAdapter mMovieAdapter;
     MovieThumbnail[] movieThumbTup = {};
@@ -30,9 +32,11 @@ public class MovieFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Add this line in order for this fragment to handle detail events.
+        // Initiate Preference Manager for Async Task
         setHasOptionsMenu(true);
-        PreferenceManager.setDefaultValues(getActivity(), R.xml.pref_settings, false);
+        PreferenceManager.setDefaultValues(getActivity().getApplicationContext()
+              ,R.xml.pref_settings
+              ,false);
     }
 
     @Override
@@ -64,6 +68,9 @@ public class MovieFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // The arrayAdapter fils the gridLayout Items with MovieThumbnail Objects
+        // containing a poster image and movie title
+
         mMovieAdapter = new MovieThumbnailAdapter(getActivity(),
                                                     movieThumbList);
 
@@ -71,12 +78,16 @@ public class MovieFragment extends Fragment {
         GridView gridView = (GridView) rootView.findViewById(R.id.gridview_movie);
         gridView.setAdapter(mMovieAdapter);
 
+        // The itemClick listener starts the movie details
+        // activity of the movie item that was clicked
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                             @Override
                                             public void onItemClick(AdapterView<?> adapterView, View view,
                                                                    int position, long id) {
 
-                                                MovieThumbnail movie = (MovieThumbnail) adapterView.getItemAtPosition(position);
+                                                MovieThumbnail movie =
+                                                      (MovieThumbnail) adapterView
+                                                            .getItemAtPosition(position);
                                                 intent.setClassName(getActivity().getApplication()
                                                         ,DetailActivity.class.getName());
 
@@ -89,21 +100,24 @@ public class MovieFragment extends Fragment {
     }
 
     class FetchMoviesTask extends AsyncTask<String, Void, String> {
-
+        //The Async Task generates a background thread which downloads the movie data from
+        //The Movie DB api. The movie data comes in the form of a JSON string with movie titles
+        //of Popular or Top Rated movies based on user preference
         @Override
         protected String doInBackground(String... args) {
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
             String sortPref = sharedPref.getString("sort", "");
 
-            RequestMovieData movies = new RequestMovieData(getActivity());
+            RequestMovieData movies = new RequestMovieData(getActivity().getApplicationContext());
             return movies.getMovieData(sortPref);
         }
 
-
         @Override
         protected void onPostExecute(String jsonMovieData) {
+            //If no network is detected after doInBackground() method, start NoNetwork Activity
+            //Otherwise, populate array adapter with formated movie data from api
             if (jsonMovieData.equals("No Network Connection")){
-                noNetworkIntent.setClassName(getActivity().getApplication()
+                noNetworkIntent.setClassName(getActivity().getApplicationContext()
                         ,NoNetworkActivity.class.getName()
                 );
 

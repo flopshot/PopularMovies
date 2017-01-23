@@ -3,6 +3,8 @@ package com.example.sean.popularmovies;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+//Implementing Parcelable class to MovieThumbnail object
+// to persist as bundle for passing to fragments
 class MovieThumbnail implements Parcelable{
 
     String movieTitle;
@@ -12,6 +14,7 @@ class MovieThumbnail implements Parcelable{
   //  String movieCat;
     String moviePlot;
 
+    //Keeping logic to include movie category
     MovieThumbnail(String title, String image, String releaseDate, //String cat,
                           String avgVotes, String plot)
     {
@@ -23,6 +26,8 @@ class MovieThumbnail implements Parcelable{
         this.moviePlot = plot;
     }
 
+    //Private Constructor for internal CREATOR object for self initializing
+    // once initialized from bundle from
     private MovieThumbnail(Parcel in){
         movieTitle = in.readString();
         movieImage = in.readString();
@@ -47,6 +52,9 @@ class MovieThumbnail implements Parcelable{
         parcel.writeString(moviePlot);
     }
 
+    // Methods createFromParcel is the custom, internal
+    // constructor method that uses private constructor
+    // newArray method persist parcelables in arrays
     public static final Parcelable.Creator<MovieThumbnail> CREATOR = new Parcelable.Creator<MovieThumbnail>() {
         @Override
         public MovieThumbnail createFromParcel(Parcel parcel) {
@@ -54,8 +62,8 @@ class MovieThumbnail implements Parcelable{
         }
 
         @Override
-        public MovieThumbnail[] newArray(int i) {
-            return new MovieThumbnail[i];
+        public MovieThumbnail[] newArray(int size) {
+            return new MovieThumbnail[size];
         }
 
     };

@@ -41,7 +41,7 @@ class MovieThumbnailAdapter extends ArrayAdapter<MovieThumbnail> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // Gets the AndroidFlavor object from the ArrayAdapter at the appropriate position
+        // Gets the MovieThumbnail object from the ArrayAdapter at the appropriate position
         MovieThumbnail movieThumbnail = getItem(position);
 
         // Adapters recycle views to AdapterViews.
@@ -59,8 +59,11 @@ class MovieThumbnailAdapter extends ArrayAdapter<MovieThumbnail> {
                 .error(R.drawable.movie_icon)
                 .into(posterView);
 
-        //iconView.setImageResource(movieThumbnail.movieImage);
+        // We use Picasso library to handle image files for movie posters. This library
+        // caches images and handles worker threads for downloading images.
 
+        // The grid view item holds a poster and a movie title view. We write the movie title
+        // to the textVew befrore returning the item view
         TextView titleView = (TextView) convertView.findViewById(R.id.grid_item_movie_title);
         titleView.setText(movieThumbnail.movieTitle);
 

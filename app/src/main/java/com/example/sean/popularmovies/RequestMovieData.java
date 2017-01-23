@@ -1,6 +1,7 @@
 package com.example.sean.popularmovies;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.util.Log;
 import java.io.BufferedReader;
@@ -9,19 +10,35 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import android.content.res.Resources.NotFoundException;
+
+/**
+ * Boiler Plate class to request Movie DB data over the network. Returns JSON string from API
+ * and delivers to Async Task
+ */
 
 class RequestMovieData {
-    private Context cont;
+    private Context mContext;
     private String APPID;
+    private int developerApiId;
 
     RequestMovieData(Context c) {
-        this.cont = c;
-        this.APPID = cont.getResources().getString(R.string.api_key);
+        this.mContext = c;
+
+        developerApiId = mContext
+              .getResources()
+              .getIdentifier("appid_local","string", mContext.getPackageName());
+
+        if(developerApiId != 0) {
+            this.APPID = mContext.getResources().getString(developerApiId);
+        }
+        else {
+            this.APPID = mContext.getResources().getString(R.string.appid);
+        }
     }
 
-
     String getMovieData(String sortPref){
-        CheckNetworking networkCheck = new CheckNetworking(cont);
+        CheckNetworking networkCheck = new CheckNetworking(mContext);
 
         if(!networkCheck.haveNetworkConnection()) {
             return "No Network Connection";

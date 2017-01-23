@@ -12,7 +12,7 @@ import com.squareup.picasso.Picasso;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * This Fragment contains the details of the movie clicked in the listView
  */
 public class DetailFragment extends Fragment {
     TextView titleView, plotView, releaseDateView, ratingView;
@@ -30,6 +30,7 @@ public class DetailFragment extends Fragment {
 
         MovieThumbnail movie = this.getArguments().getParcelable("movieDetail");
 
+        //Write movie details to views in fragment
         titleView = (TextView) rootView.findViewById(R.id.detailTitle);
         plotView = (TextView) rootView.findViewById(R.id.detailPlotValue);
         ratingView = (TextView) rootView.findViewById(R.id.detailRatingValue);

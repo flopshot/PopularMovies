@@ -8,19 +8,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+/**
+ * For the Popular Movies app Stage 1, we create the main activity which contains one
+ * fragment. This activity holds 2 intents which start the Settings Activity (from
+ * the settings button in the actionbar menu) and the MovieDetail activity. We also
+ * add setting preferences logic to obtain user settings.
+ */
+
 public class MainActivity extends AppCompatActivity {
     Intent intentSettings = new Intent();
     Intent intentRestart = new Intent();
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
+    SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
         PreferenceManager.setDefaultValues(this, R.xml.pref_settings, false);
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
 
         //Setup a shared preference listener for hpwAddress and restart transport
         listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -52,8 +60,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        //Overriding onStart to display sort type in title through shared preferences
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String sortType = sharedPref.getString("sort", "");
+        String sortType =  sharedPref.getString("sort", "");
         if (sortType.equals("1")) {
             sortType = "Popular Movies";
         }

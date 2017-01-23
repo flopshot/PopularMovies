@@ -1,4 +1,5 @@
 <resources>
+    <!--Main Application Strings -->
     <string name="app_name">Popular Movies</string>
     <string name="movie_detail">Movie Details</string>
     <string name="action_settings">Settings</string>
@@ -9,14 +10,12 @@
     <!--Sort Preference Settings -->
     <string name="pref_sort_label">Sort Movies By</string>
     <string name="pref_sort_key">sort</string>
-    <string-array name="pref_sort_list">
-        <item>Popular</item>
-        <item>Top Rated</item>
-    </string-array>
-    <string-array name="pref_sort_type_values">
-        <item>1</item>
-        <item>0</item>
-    </string-array>
+
+    <string name="pref_sort_label_popular">Popular</string>
+    <string name="pref_sort_label_toprated">Top Rated</string>
+
+    <string name="pref_sort_popular">1</string>
+    <string name="pref_sort_toprated">0</string>
 
     <!--Movie Detail Fragment Strings-->
     <string name="plotLabel">Plot</string>
