@@ -7,14 +7,14 @@ import android.net.NetworkInfo;
 /**
  * Network Checking Class used to check device network status.
  */
-class CheckNetworking {
-    Context context;
+public class CheckNetworking {
+    private Context context;
 
     public CheckNetworking(Context context){
         this.context=context;
     }
 
-    Boolean haveNetworkConnection(){
+    public Boolean haveNetworkConnection(){
         ConnectivityManager cm =
                 (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 

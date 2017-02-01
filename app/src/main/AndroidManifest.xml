@@ -17,10 +17,10 @@
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".DetailActivity"
             android:label="@string/movie_detail"
@@ -30,13 +30,20 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.sean.popularmovies.MainActivity" />
         </activity>
+
         <activity android:name=".SettingsActivity">
             <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value="com.example.sean.popularmovies.MainActivity" />
         </activity>
 
-        <activity android:name="com.example.sean.popularmovies.NoNetworkActivity"></activity>
+        <activity android:name="com.example.sean.popularmovies.NoNetworkActivity"/>
+
+        <provider
+            android:authorities="com.example.sean.popularmovies"
+            android:name="com.example.sean.popularmovies.data.MovieProvider"
+            android:exported="true"/>
+
     </application>
 
 </manifest>

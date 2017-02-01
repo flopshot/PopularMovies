@@ -1,11 +1,9 @@
 package com.example.sean.popularmovies;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,7 +40,7 @@ public class MovieFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        new FetchMoviesTask().execute();
+        new FetchMoviesTask(getActivity().getApplicationContext(), mMovieAdapter).execute();
     }
 
     @Override
@@ -58,7 +56,7 @@ public class MovieFragment extends Fragment {
         int id = item.getItemId();
 
         if (id == R.id.action_refresh) {
-            new FetchMoviesTask().execute();
+            new FetchMoviesTask(getActivity().getApplicationContext(), mMovieAdapter).execute();
             return true;
         }
 
@@ -99,39 +97,4 @@ public class MovieFragment extends Fragment {
         return rootView;
     }
 
-    class FetchMoviesTask extends AsyncTask<String, Void, String> {
-        //The Async Task generates a background thread which downloads the movie data from
-        //The Movie DB api. The movie data comes in the form of a JSON string with movie titles
-        //of Popular or Top Rated movies based on user preference
-        @Override
-        protected String doInBackground(String... args) {
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String sortPref = sharedPref.getString("sort", "");
-
-            RequestMovieData movies = new RequestMovieData(getActivity().getApplicationContext());
-            return movies.getMovieData(sortPref);
-        }
-
-        @Override
-        protected void onPostExecute(String jsonMovieData) {
-            //If no network is detected after doInBackground() method, start NoNetwork Activity
-            //Otherwise, populate array adapter with formated movie data from api
-            if (jsonMovieData.equals("No Network Connection")){
-                noNetworkIntent.setClassName(getActivity().getApplicationContext()
-                        ,NoNetworkActivity.class.getName()
-                );
-
-                startActivity(noNetworkIntent);
-            }
-            else {
-                List<MovieThumbnail> movieArray = MovieArrayCreator
-                        .getMovieArray(jsonMovieData
-                        );
-
-                mMovieAdapter.clear();
-                mMovieAdapter.addAll(movieArray);
-                mMovieAdapter.notifyDataSetChanged();
-            }
-        }
-    }
 }

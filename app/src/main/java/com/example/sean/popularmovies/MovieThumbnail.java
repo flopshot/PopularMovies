@@ -3,8 +3,9 @@ package com.example.sean.popularmovies;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-//Implementing Parcelable class to MovieThumbnail object
-// to persist as bundle for passing to fragments
+/**Implementing Parcelable class to MovieThumbnail object
+ * to persist as bundle for passing to fragments
+ */
 class MovieThumbnail implements Parcelable{
 
     String movieTitle;

@@ -14,7 +14,6 @@ import android.view.MenuItem;
  * the settings button in the actionbar menu) and the MovieDetail activity. We also
  * add setting preferences logic to obtain user settings.
  */
-
 public class MainActivity extends AppCompatActivity {
     Intent intentSettings = new Intent();
     Intent intentRestart = new Intent();
@@ -28,8 +27,6 @@ public class MainActivity extends AppCompatActivity {
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         PreferenceManager.setDefaultValues(this, R.xml.pref_settings, false);
 
-
-
         //Setup a shared preference listener for hpwAddress and restart transport
         listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
@@ -40,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-
         prefs.registerOnSharedPreferenceChangeListener(listener);
 
         if (savedInstanceState == null) {
@@ -85,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intentSettings);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

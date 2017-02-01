@@ -6,6 +6,11 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
+/**
+ * Extended settings activity for List preferences of movies sorted in gridview of Main Activity
+ * Fragment
+ */
+
 public class SettingsActivity extends PreferenceActivity
     implements Preference.OnPreferenceChangeListener {
         @Override

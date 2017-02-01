@@ -1,13 +1,13 @@
 package com.example.sean.popularmovies;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 /**
- * Movie Detail Activity contatins Activity logic for movie in list item that was clicked in
+ * Movie Detail Activity contains Activity logic for movie in list item that was clicked in
  * Movie Fragment. Contains a detail Fragment class to display movie details layout
  */
 public class DetailActivity extends AppCompatActivity {

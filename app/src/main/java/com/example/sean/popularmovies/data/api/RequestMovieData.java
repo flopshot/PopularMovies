@@ -1,82 +1,65 @@
-package com.example.sean.popularmovies;
+package com.example.sean.popularmovies.data.api;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.util.Log;
+
+import com.example.sean.popularmovies.CheckNetworking;
+import com.example.sean.popularmovies.R;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import android.content.res.Resources.NotFoundException;
 
 /**
  * Boiler Plate class to request Movie DB data over the network. Returns JSON string from API
  * and delivers to Async Task
  */
 
-class RequestMovieData {
+public class RequestMovieData {
     private Context mContext;
     private String APPID;
-    private int developerApiId;
 
-    RequestMovieData(Context c) {
+    public RequestMovieData(Context c) {
+        int developerApi;
         this.mContext = c;
 
-        developerApiId = mContext
+        // This block of code sets the API key from a resource file. If you are not the
+        // developer put your api key in the api_key.xml file of the res/values directory
+        developerApi = mContext
               .getResources()
               .getIdentifier("appid_local","string", mContext.getPackageName());
 
-        if(developerApiId != 0) {
-            this.APPID = mContext.getResources().getString(developerApiId);
-        }
-        else {
+        if(developerApi != 0) {
+            this.APPID = mContext.getResources().getString(developerApi);
+        } else {
             this.APPID = mContext.getResources().getString(R.string.appid);
         }
     }
 
-    String getMovieData(String sortPref){
+    public String getMovieData(int queryType, @Nullable String movieId){
+        //If there is no network connectivity, return the appropriate message
         CheckNetworking networkCheck = new CheckNetworking(mContext);
-
         if(!networkCheck.haveNetworkConnection()) {
             return "No Network Connection";
         }
 
-        String sortType;
-
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
-
         // Will contain the raw JSON response as a string.
         String movieJsonStr = null;
 
-        if (sortPref.equals("1")) {
-            sortType = "popular";
-        }
-        else{
-            sortType = "top_rated";
-        }
-
-        Uri.Builder builder = new Uri.Builder();
-        builder.scheme("http")
-                .authority("api.themoviedb.org")
-                .appendPath("3")
-                .appendPath("movie")
-                .appendPath(sortType)
-                .appendQueryParameter("api_key", APPID);
-
-        String myUrl = builder.build().toString();
-
+        // Construct the URL for the MovieDB query
+        // Possible parameters are avaiable at Movie DB API page, at
+        // https://developers.themoviedb.org/3/getting-started
+        String urlRequestQuery = ApiContract.buildRequestUrl(APPID, queryType, movieId);
         try {
-            // Construct the URL for the OpenWeatherMap query
-            // Possible parameters are avaiable at OWM's forecast API page, at
-            // http://openweathermap.org/API#forecast
-            URL url =
-                    new URL(myUrl);
+            URL url = new URL(urlRequestQuery);
 
-            // Create the request to OpenWeatherMap, and open the connection
+            // Create the request to Server, and open the connection
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
@@ -103,12 +86,9 @@ class RequestMovieData {
                 return null;
             }
             movieJsonStr = buffer.toString();
-
-
-
         } catch (IOException e) {
             Log.e("RequestMovieData", "Error ", e);
-            // If the code didn't successfully get the weather data, there's no point in attemping
+            // If the code didn't successfully get the movie data, there's no point in attempting
             // to parse it.
             return null;
         } finally{
@@ -123,8 +103,6 @@ class RequestMovieData {
                 }
             }
         }
-
         return movieJsonStr;
     }
-
 }
