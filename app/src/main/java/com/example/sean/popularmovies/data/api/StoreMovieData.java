@@ -122,7 +122,7 @@ public class StoreMovieData {
             values.put(MovieContract.ReviewEntry.COLUMN_CONTENT,
                   ApiDataParser.getReview(reviewJsonStr, i));
             values.put(MovieContract.ReviewEntry.COLUMN_URL,
-                  ApiDataParser.getReveiewLink(reviewJsonStr, i));
+                  ApiDataParser.getReviewLink(reviewJsonStr, i));
             db.insert(MovieContract.ReviewEntry.TABLE_NAME, "", values);
         }
         values.clear();

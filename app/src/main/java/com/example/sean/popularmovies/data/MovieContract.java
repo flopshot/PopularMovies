@@ -34,7 +34,7 @@ public class MovieContract {
     /* Inner class that defines the table contents of the movie table */
     public static final class MovieEntry implements BaseColumns {
 
-        static final Uri CONTENT_URI =
+        public static final Uri CONTENT_URI =
               BASE_CONTENT_URI.buildUpon().appendPath(PATH_MOVIE).build();
 
         static final String CONTENT_TYPE =

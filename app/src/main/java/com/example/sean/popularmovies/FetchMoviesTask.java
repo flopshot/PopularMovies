@@ -15,11 +15,9 @@ class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
     //The Movie DB api. The movie data comes in the form of a JSON string with movie titles
     //of Popular or Top Rated movies based on user preference
     private Context mContext;
-    private MovieThumbnailAdapter mMovieAdapter; //TODO: Get rid of this when using cursoradapter
 
-    FetchMoviesTask(Context c, MovieThumbnailAdapter mta) {
+    FetchMoviesTask(Context c) {
         this.mContext = c;
-        this.mMovieAdapter = mta;
     }
 
     @Override

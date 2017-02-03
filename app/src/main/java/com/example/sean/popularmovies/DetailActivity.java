@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.sean.popularmovies.data.MovieContract;
+
 /**
  * Movie Detail Activity contains Activity logic for movie in list item that was clicked in
  * Movie Fragment. Contains a detail Fragment class to display movie details layout
@@ -17,7 +19,7 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent intentDetail = getIntent();
-        MovieThumbnail movie = intentDetail.getParcelableExtra("movie");
+        String movieId = intentDetail.getStringExtra(MovieContract.MovieEntry.COLUMN_MOVIE_ID);
 
         super.onCreate(savedInstanceState);
 
@@ -26,7 +28,7 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         if (savedInstanceState == null) {
             Bundle args = new Bundle();
-            args.putParcelable("movieDetail", movie);
+            args.putCharSequence(MovieContract.MovieEntry.COLUMN_MOVIE_ID, movieId);
             detailFragment.setArguments(args);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container_detail, detailFragment)
@@ -54,7 +56,6 @@ public class DetailActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

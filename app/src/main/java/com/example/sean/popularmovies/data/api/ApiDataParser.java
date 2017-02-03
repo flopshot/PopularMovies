@@ -6,17 +6,15 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 /**
  * JSON data extraction methods for return JSON string from Movie DB API
  */
-
 class ApiDataParser {
     static final String TOP_LEVEL_ARRAY_LABEL = "results";
     static final String TOP_LEVEL_TRAILER_ARRAY_LABEL = "youtube";
+    private static final String POSTER_IMAGE_AUTHORITY = "https://image.tmdb.org/t/p/w500";
     private static final String PLOT_LABEL = "overview";
     private static final String TRAILER_NAME_LABEL = "name";
     private static final String RELEASE_DATE_LABEL = "release_date";
@@ -55,7 +53,7 @@ class ApiDataParser {
         }
     }
 
-    static String getReveiewLink(String movieJsonStr, int index) {
+    static String getReviewLink(String movieJsonStr, int index) {
         try {
             JSONObject movieJson = new JSONObject(movieJsonStr);
             JSONArray moviesJson = movieJson.getJSONArray(TOP_LEVEL_ARRAY_LABEL);
@@ -88,8 +86,7 @@ class ApiDataParser {
             String date = singleMovieJson.getString(RELEASE_DATE_LABEL);
 
             SimpleDateFormat sdf  = new SimpleDateFormat(API_STRING_DATE_FORMAT, Locale.US);
-            Date d = sdf.parse(date);
-            Long unixTime = TimeUnit.MILLISECONDS.toMinutes(d.getTime());
+            Long unixTime = sdf.parse(date).getTime()/1000L;
             return String.valueOf(unixTime);
         } catch (JSONException | ParseException ex) {
             ex.printStackTrace();
@@ -181,7 +178,7 @@ class ApiDataParser {
             JSONObject movieJson = new JSONObject(movieJsonStr);
             JSONArray moviesJson = movieJson.getJSONArray(TOP_LEVEL_ARRAY_LABEL);
             JSONObject singleMovieJson = moviesJson.getJSONObject(index);
-            return singleMovieJson.getString(POSTER_PATH_LABEL);
+            return POSTER_IMAGE_AUTHORITY + singleMovieJson.getString(POSTER_PATH_LABEL);
         }
         catch (JSONException e) {
             e.printStackTrace();
