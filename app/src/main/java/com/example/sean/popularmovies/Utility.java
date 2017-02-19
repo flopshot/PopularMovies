@@ -37,14 +37,23 @@ class Utility {
     static String[] getPreferredMovieType(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String defaultPref = context.getString(R.string.pref_sort_toprated);
+        String popularSort = context.getString(R.string.pref_sort_popular);
+        String favoriteSort = context.getString(R.string.pref_sort_favorites);
         String pref = prefs.getString(context.getString(R.string.pref_sort_key),
               defaultPref);
         if (pref.equals(defaultPref)) {
             return new String[] {MovieContract.MovieEntry.COLUMN_ISTOPRATED,
                   MovieContract.MovieEntry.COLUMN_AVG_VOTES};
-        } else {
+        } else if (pref.equals(popularSort)) {
             return new String[] {MovieContract.MovieEntry.COLUMN_ISPOPOULAR,
                   MovieContract.MovieEntry.COLUMN_POPULARITY};
+        } else if (pref.equals(favoriteSort)) {
+            return new String[] {MovieContract.FavoritesEntry.COLUMN_MOVIE_ID,
+                  MovieContract.MovieEntry.COLUMN_AVG_VOTES};
+        } else {
+            throw new RuntimeException(
+                  "Error in Preferences: cannot load movies to gridView by preference settings"
+            );
         }
     }
 

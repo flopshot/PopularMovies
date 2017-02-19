@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -21,11 +20,10 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
     SharedPreferences prefs, pref = null;
     private static final String PREF_KEY = "requestNetworkData";
-    private Boolean requestDataBoolean = true;
+    Boolean requestDataBoolean = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.w("Main Activity1", String.valueOf(requestDataBoolean));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -43,19 +41,20 @@ public class MainActivity extends AppCompatActivity {
         };
         prefs.registerOnSharedPreferenceChangeListener(listener);
 
+        // Check if the activity called isFinishing() in the last onPause() call.
+        // If it did not, don't update the movie data from the movie DB server.
+        // If it did, then refresh the movie data over the network through an api call
+        //      by setting "requestDataBoolean" to true.
+        // The fragment will read this variable and call "updateMovies()"
         pref = getSharedPreferences(PREF_KEY, MODE_PRIVATE);
         if (pref != null) {
-            Log.w("Main Activity2", String.valueOf(requestDataBoolean)); //TODO: Remove log tag
             requestDataBoolean = null;
             requestDataBoolean = pref.getBoolean(PREF_KEY, true);
-            Log.w("Main Activity3", String.valueOf(requestDataBoolean));
         }
 
+        // Create Fragment
         if (savedInstanceState == null) {
             MovieFragment frag = new MovieFragment();
-            Bundle args = new Bundle();
-            args.putBoolean(PREF_KEY, requestDataBoolean);
-            frag.setArguments(args);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, frag)
                     .commit();
@@ -75,11 +74,18 @@ public class MainActivity extends AppCompatActivity {
         //Overriding onStart to display sort type in title through shared preferences
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String sortType =  sharedPref.getString("sort", "");
-        if (sortType.equals("1")) {
-            sortType = "Popular Movies";
-        }
-        else{
-            sortType = "Top Rated Movies";
+        switch (sortType) {
+            case "1":
+                sortType = "Popular Movies";
+                break;
+            case "0":
+                sortType = "Top Rated Movies";
+                break;
+            case "2":
+                sortType = "Favorite Movies";
+                break;
+            default:
+                break;
         }
         setTitle(sortType);
     }

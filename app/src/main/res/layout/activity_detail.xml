@@ -7,4 +7,4 @@
     tools:context="com.example.sean.popularmovies.DetailActivity"
     tools:ignore="MergeRootFrame">
 
-    </FrameLayout>
+</FrameLayout>

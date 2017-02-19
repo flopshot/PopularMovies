@@ -1,91 +1,125 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.sean.popularmovies.DetailFragment">
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/ratingLabel"
-        android:id="@+id/detailTitle"
-        android:layout_gravity="end"
-        android:textSize="21sp"
-        android:textStyle="normal|bold"
-        android:gravity="center"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/detailPoster"
-        android:layout_toStartOf="@+id/detailPoster"
-        android:layout_above="@+id/detailRating" />
-
-    <TextView
-        android:text="@string/releaseDateLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/detailReleaseDate"
-        android:textSize="14sp"
-        android:layout_alignBottom="@+id/detailPoster"
-        android:layout_alignParentLeft="true"
-        android:textStyle="normal|bold" />
-
-    <TextView
-        android:text="@string/ratingLabel"
-        android:layout_height="wrap_content"
-        android:id="@+id/detailRating"
-        android:layout_above="@+id/detailReleaseDate"
-        android:layout_alignRight="@+id/detailReleaseDate"
-        android:layout_alignLeft="@+id/detailReleaseDate"
-        android:layout_width="wrap_content"
-        android:textStyle="normal|bold" />
-
-    <ImageView
-        android:layout_width="@dimen/width_detail_poster"
-        android:layout_height="@dimen/width_detail_poster"
-        android:horizontalSpacing="@dimen/horizontal_spacing"
-        app:srcCompat="@drawable/movie_icon"
-        android:id="@+id/detailPoster"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:adjustViewBounds="true"
-        android:cropToPadding="true" />
-
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/detailPlotValue"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/detailPlot"
-        android:layout_alignParentBottom="true" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:text="@string/plotLabel"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/detailReleaseDate"
-        android:id="@+id/detailPlot"
-        android:textStyle="normal|bold" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/titleLabel"
+            android:id="@+id/detailTitle"
+            android:layout_gravity="end"
+            android:textSize="21sp"
+            android:textStyle="normal|bold"
+            android:gravity="center"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/detailPoster"
+            android:layout_toStartOf="@+id/detailPoster"
+            android:layout_above="@+id/favorite"/>
 
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_alignRight="@+id/detailReleaseDateValue"
-        android:layout_alignLeft="@+id/detailReleaseDateValue"
-        android:layout_above="@+id/detailReleaseDateValue"
-        android:id="@+id/detailRatingValue"/>
+        <ToggleButton
+            android:background="@drawable/ic_fav_toggle_bg"
+            style="@style/toggleButton"
+            android:layout_width="@dimen/favorite_toggle_button_size"
+            android:layout_height="@dimen/favorite_toggle_button_size"
+            android:layout_above="@+id/detailRating"
+            android:id="@+id/favorite"/>
+        <!--             android:textOff="Favorite"
+            android:textOn="Favorite" -->
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/detailPoster"
-        android:layout_toLeftOf="@+id/detailPoster"
-        android:id="@+id/detailReleaseDateValue"/>
+        <TextView
+            android:text="@string/ratingLabel"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailRating"
+            android:layout_above="@+id/detailReleaseDate"
+            android:layout_alignRight="@+id/detailReleaseDate"
+            android:layout_alignEnd="@id/detailReleaseDate"
+            android:layout_alignStart="@id/detailReleaseDate"
+            android:layout_alignLeft="@+id/detailReleaseDate"
+            android:layout_width="wrap_content"
+            android:textStyle="normal|bold" />
 
-</RelativeLayout>
+        <TextView
+            android:text="@string/releaseDateLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailReleaseDate"
+            android:textSize="14sp"
+            android:layout_alignBottom="@+id/detailPoster"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textStyle="normal|bold" />
+
+        <ImageView
+            android:layout_width="@dimen/width_detail_poster"
+            android:layout_height="@dimen/width_detail_poster"
+            android:horizontalSpacing="@dimen/horizontal_spacing"
+            app:srcCompat="@drawable/movie_icon"
+            android:id="@+id/detailPoster"
+            android:contentDescription="@string/app_name"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:adjustViewBounds="true"
+            android:cropToPadding="true" />
+
+        <TextView
+            android:text="@string/plotLabel"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/detailReleaseDate"
+            android:id="@+id/detailPlot"
+            android:textStyle="normal|bold" />
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignRight="@+id/detailReleaseDateValue"
+            android:layout_alignEnd="@id/detailReleaseDateValue"
+            android:layout_alignStart="@id/detailReleaseDateValue"
+            android:layout_alignLeft="@+id/detailReleaseDateValue"
+            android:layout_above="@+id/detailReleaseDateValue"
+            android:id="@+id/detailRatingValue"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/detailPoster"
+            android:layout_toStartOf="@id/detailPoster"
+            android:layout_toLeftOf="@+id/detailPoster"
+            android:id="@+id/detailReleaseDateValue"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailPlotValue"
+            android:layout_below="@+id/detailPlot"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+        <ExpandableListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/detailPlotValue"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/trailerGroup"
+            android:layout_margin="10dp"
+            android:choiceMode="singleChoice"
+            android:groupIndicator="@null"
+            android:smoothScrollbar="true"/>
+
+    </RelativeLayout>
 </ScrollView>
-

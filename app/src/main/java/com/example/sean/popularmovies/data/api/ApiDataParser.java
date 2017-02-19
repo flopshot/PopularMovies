@@ -14,6 +14,8 @@ import java.util.Locale;
 class ApiDataParser {
     static final String TOP_LEVEL_ARRAY_LABEL = "results";
     static final String TOP_LEVEL_TRAILER_ARRAY_LABEL = "youtube";
+    // This is the current URL that youtube uses to locate videos on their server
+    private static final String YOUTUBE_URL = "vnd.youtube://" ;
     private static final String POSTER_IMAGE_AUTHORITY = "https://image.tmdb.org/t/p/w500";
     private static final String PLOT_LABEL = "overview";
     private static final String TRAILER_NAME_LABEL = "name";
@@ -46,7 +48,8 @@ class ApiDataParser {
             JSONObject movieJson = new JSONObject(movieJsonStr);
             JSONArray moviesJson = movieJson.getJSONArray(TOP_LEVEL_TRAILER_ARRAY_LABEL);
             JSONObject singleMovieJson = moviesJson.getJSONObject(index);
-            return singleMovieJson.getString(YOUTUBE_KEY_LABEL);
+            String youtubeUrl = YOUTUBE_URL + singleMovieJson.getString(YOUTUBE_KEY_LABEL);
+            return youtubeUrl;
         } catch (JSONException e) {
             e.printStackTrace();
             return null;

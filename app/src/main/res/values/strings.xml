@@ -13,16 +13,30 @@
 
     <string name="pref_sort_label_popular">Popular</string>
     <string name="pref_sort_label_toprated">Top Rated</string>
+    <string name="pref_sort_label_favorites">Favorites</string>
 
+    <string name="pref_sort_favorites">2</string>
     <string name="pref_sort_popular">1</string>
     <string name="pref_sort_toprated">0</string>
 
     <!--Movie Detail Fragment Strings-->
+    <string name="titleLabel">Title</string>
     <string name="plotLabel">Plot</string>
     <string name="releaseDateLabel">Release Date</string>
     <string name="ratingLabel">Rating</string>
+    <string name="trailerLabel">Trailers</string>
+    <string name="reviewLabel">Reviews</string>
+    <string name="favoriteLabel">Favorite ✩</string>
 
     <!--No Network Activity Strings-->
     <string name="NoNetworkMessage">You are not connected to a network.
         \n Please connect and refresh</string>
+
+    <!--Favorites Star Icon-->
+    <string name="star_favorite">★</string>
+
+    <!--MovieFragment Item Longpress Context Menu Strings-->
+    <string name="menu_add_to_favorites">Add</string>
+    <string name="menu_remove_from_favorites">Remove</string>
+    <string name="menu_favorites_title">Favorites List</string>
 </resources>

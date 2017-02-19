@@ -5,8 +5,11 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+
+import static com.example.sean.popularmovies.data.MovieDbHelper.getHelper;
 
 /**
  * Content Provider manages movie info, trailer, and review data requests from applications
@@ -16,10 +19,39 @@ public class MovieProvider extends ContentProvider {
     // The URI Matcher used by this content provider.
     private static final UriMatcher sUriMatcher = buildUriMatcher();
     private SQLiteDatabase db;
+    private MovieDbHelper mOpenHelper;
     static final int MOVIE = 100;
     static final int TRAILER = 101;
     static final int REVIEW = 102;
     static final int FAVORITES = 103;
+    static final int MOVIES_FAVORITES = 104;
+
+    private static final SQLiteQueryBuilder sMoviesAndFavoritesQueryBuilder;
+
+    static{
+        sMoviesAndFavoritesQueryBuilder = new SQLiteQueryBuilder();
+
+        //This is an inner join which looks like
+        //weather INNER JOIN location ON weather.location_id = location._id
+        sMoviesAndFavoritesQueryBuilder.setTables(
+              MovieContract.MovieEntry.TABLE_NAME + " LEFT JOIN " +
+                    MovieContract.FavoritesEntry.TABLE_NAME +
+                    " ON " + MovieContract.MovieEntry.TABLE_NAME +
+                    "." + MovieContract.MovieEntry.COLUMN_MOVIE_ID +
+                    " = " + MovieContract.FavoritesEntry.TABLE_NAME +
+                    "." + MovieContract.FavoritesEntry.COLUMN_MOVIE_ID);
+    }
+
+    private Cursor getMovieWithFavorites(String[] columns, String whereClause, String sortOrder) {
+        return sMoviesAndFavoritesQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+              columns,
+              whereClause,
+              null,
+              null,
+              null,
+              sortOrder
+        );
+    }
 
     static UriMatcher buildUriMatcher() {
         // All paths added to the UriMatcher have a corresponding code to return when a match is
@@ -33,12 +65,15 @@ public class MovieProvider extends ContentProvider {
         matcher.addURI(authority, MovieContract.PATH_TRAILER, TRAILER);
         matcher.addURI(authority, MovieContract.PATH_REVIEW, REVIEW);
         matcher.addURI(authority, MovieContract.PATH_FAVORITES, FAVORITES);
+        matcher.addURI(authority,
+                       MovieContract.PATH_MOVIE + "/" + MovieContract.PATH_FAVORITES,
+                       MOVIES_FAVORITES);
         return matcher;
     }
 
     @Override
     public boolean onCreate() {
-        MovieDbHelper mOpenHelper = new MovieDbHelper(getContext());
+        mOpenHelper = getHelper(getContext());
         db = mOpenHelper.getWritableDatabase();
         return true;
     }
@@ -71,6 +106,8 @@ public class MovieProvider extends ContentProvider {
                       MovieContract.FavoritesEntry.TABLE_NAME, columns,
                       whereClause, whereArgs, null, null, sortOrder
                 );
+            case MOVIES_FAVORITES:
+                return getMovieWithFavorites(columns, whereClause, sortOrder);
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -91,6 +128,8 @@ public class MovieProvider extends ContentProvider {
                 return MovieContract.ReviewEntry.CONTENT_TYPE;
             case FAVORITES:
                 return MovieContract.FavoritesEntry.CONTENT_TYPE;
+            case MOVIES_FAVORITES:
+                return MovieContract.MovieEntry.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -131,7 +170,7 @@ public class MovieProvider extends ContentProvider {
                 if ( _id > 0)
                     returnUri = MovieContract.FavoritesEntry.buildTrailerUri(_id);
                 else
-                    throw new android.database.SQLException("Failed to insert row into" + uri);
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
             }
             default:

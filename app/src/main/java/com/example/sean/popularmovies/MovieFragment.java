@@ -1,44 +1,62 @@
 package com.example.sean.popularmovies;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.example.sean.popularmovies.data.MovieContract;
+
 /**
  * This Fragment contains the main activity listView of Movie thumbnails
  */
 public class MovieFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
-    MovieThumbnailAdapter mMovieAdapter;
+    private MovieThumbnailAdapter mMovieAdapter;
+    private  MyObserver myObserver;
+    private Uri movieAndFavoritesTableUri;
     private static final int MOVIE_LOADER = 0;
-    private boolean requestDataBoolean;
-    private static final String PREF_KEY = "requestNetworkData";
+    private Boolean requestDataBoolean = null;
+    private static LoaderManager.LoaderCallbacks sLoaderCallback;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestDataBoolean = this.getArguments().getBoolean(PREF_KEY);
         // Initiate Preference Manager for Async Task
         setHasOptionsMenu(true);
+        // Observe Content Provider Data Changes
+        myObserver = new MyObserver(new Handler());
+        sLoaderCallback = this;
+        // URI of Movie Table
+        movieAndFavoritesTableUri = MovieContract.MovieEntry.buildMovieWithFavorites();
+        // Register ContentObserver in onCreate to catch changes in detail fragment
+        getActivity()
+              .getContentResolver()
+              .registerContentObserver(MovieContract.FavoritesEntry.CONTENT_URI, true, myObserver);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        getLoaderManager().initLoader(MOVIE_LOADER, null, this);
+        getLoaderManager().initLoader(MOVIE_LOADER, null, sLoaderCallback);
+        requestDataBoolean = ((MainActivity)getActivity()).requestDataBoolean;
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -64,10 +82,16 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public void onStart() {
         super.onStart();
-        Log.w("Movie Frag", String.valueOf(requestDataBoolean)); //TODO: Remove log tag
+        Log.w("Frag RequestDataBool", String.valueOf(requestDataBoolean));
         if (requestDataBoolean) {
             updateMovies();
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().getContentResolver().unregisterContentObserver(myObserver);
     }
 
     @Override
@@ -94,24 +118,74 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
                 startActivity(intent);
             }
         });
+
+        gridView.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
+        gridView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+            String idOfLongPressItem;
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.menu_add_to_favorites:
+                            ContentValues values = new ContentValues();
+                            values.put(MovieContract.FavoritesEntry.COLUMN_MOVIE_ID, idOfLongPressItem);
+                            getActivity().getContentResolver().insert(MovieContract.FavoritesEntry.CONTENT_URI, values);
+                            values.clear();
+                            return true;
+                        case R.id.menu_remove_from_favorites:
+                            getActivity().getContentResolver().delete(
+                                  MovieContract.FavoritesEntry.CONTENT_URI,
+                                  MovieContract.FavoritesEntry.COLUMN_MOVIE_ID + "=?",
+                                  new String[]{idOfLongPressItem});
+                            return true;
+                        default:
+                            return false;
+                    }
+            }
+
+            @Override
+            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+                idOfLongPressItem = String.valueOf(id);
+            }
+
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                MenuInflater inflater = mode.getMenuInflater();
+                inflater.inflate(R.menu.movie_thumbnail_longpress, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                mode.setTitle(R.string.menu_favorites_title);
+                return true;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+            }
+        });
         return rootView;
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        String[] movieTypeListSettingQueryArgs = Utility.
-              getPreferredMovieType(getActivity().getApplicationContext());
+        Context mContext = getActivity().getApplicationContext();
+        String whereClause;
+        String[] movieTypeListSettingQueryArgs = Utility
+              .getPreferredMovieType(mContext);
 
         // WHERE clause filter only popular or top rated movies
-        // for cursor to display in gridview of fragment
-        String whereClause = movieTypeListSettingQueryArgs[0] + "=1";
+        // for cursor to display in gridView of fragment
+        if (movieTypeListSettingQueryArgs[0].equals(MovieContract.FavoritesEntry.COLUMN_MOVIE_ID)) {
+            whereClause = movieTypeListSettingQueryArgs[0] + "<>0";
+        } else {
+            whereClause = movieTypeListSettingQueryArgs[0] + "=1";
+        }
         // sort ORDER:  Descending, by popularity or vote score.
         String sortOrder = movieTypeListSettingQueryArgs[1] + " DESC";
-        // URI of Movie Table
-        Uri movieTableUri = MovieContract.MovieEntry.CONTENT_URI;
 
-        return new CursorLoader(getActivity(),
-              movieTableUri,
+        return new CursorLoader(mContext,
+              movieAndFavoritesTableUri,
               null,
               whereClause,
               null,
@@ -120,7 +194,7 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        mMovieAdapter.swapCursor(cursor);
+        mMovieAdapter.changeCursor(cursor);
     }
 
     @Override
@@ -131,5 +205,22 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
     void updateMovies() {
         Log.w("MovieFragment", "Update Movies is Running");
         new FetchMoviesTask(getActivity().getApplicationContext()).execute();
+    }
+
+    public class MyObserver extends ContentObserver {
+        // Consider Refactor to new class
+        MyObserver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            this.onChange(selfChange,null);
+        }
+
+        @Override
+        public void onChange(boolean selfChange, Uri uri) {
+            getLoaderManager().restartLoader(MOVIE_LOADER, null, sLoaderCallback);
+        }
     }
 }

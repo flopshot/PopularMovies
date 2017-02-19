@@ -60,12 +60,16 @@ public class MovieContract {
         static Uri buildMovieUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
+
+        public static Uri buildMovieWithFavorites() {
+            return CONTENT_URI.buildUpon().appendPath(PATH_FAVORITES).build();
+        }
     }
 
     /* Inner class that defines the table contents of the review table */
     public static final class ReviewEntry implements BaseColumns {
 
-        static final Uri CONTENT_URI =
+        public static final Uri CONTENT_URI =
               BASE_CONTENT_URI.buildUpon().appendPath(PATH_REVIEW).build();
 
         static final String CONTENT_TYPE =
@@ -94,7 +98,7 @@ public class MovieContract {
     /* Inner class that defines the table contents of the trailer table */
     public static final class TrailerEntry implements BaseColumns {
 
-        static final Uri CONTENT_URI =
+        public static final Uri CONTENT_URI =
               BASE_CONTENT_URI.buildUpon().appendPath(PATH_TRAILER).build();
 
         static final String CONTENT_TYPE =
@@ -119,9 +123,9 @@ public class MovieContract {
     }
 
     /* Inner class that defines the table contents of the favorite movies table */
-    static final class FavoritesEntry implements BaseColumns {
+    public static final class FavoritesEntry implements BaseColumns {
 
-        static final Uri CONTENT_URI =
+        public static final Uri CONTENT_URI =
               BASE_CONTENT_URI.buildUpon().appendPath(PATH_FAVORITES).build();
 
         static final String CONTENT_TYPE =
@@ -134,7 +138,7 @@ public class MovieContract {
 
         // The movie_id setting string is the movie id returned from api
         // & will be sent to server for the trailer and review queries.
-        static final String COLUMN_MOVIE_ID = "movie_id";
+        public static final String COLUMN_MOVIE_ID = "favorite_movie_id";
 
         static Uri buildTrailerUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);

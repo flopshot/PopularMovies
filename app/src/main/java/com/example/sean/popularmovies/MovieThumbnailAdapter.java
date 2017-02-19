@@ -2,6 +2,7 @@ package com.example.sean.popularmovies;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,7 @@ class MovieThumbnailAdapter extends CursorAdapter {
         super(context, c, 0);
         // Here, we initialize the CursorAdapter's internal storage for the context and the list.
         // the third argument is used when the CursorAdapter is registering a content observer
-        // listener, which is not needed when using a cursorloader. Here, we used 0.
+        // listener, which is not needed when using a CursorLoader. Here, we used 0.
     }
 
     @Override
@@ -34,11 +35,11 @@ class MovieThumbnailAdapter extends CursorAdapter {
     }
 
     /*
-    This is where we fill-in the views with the contents of the cursor.
-    */
+        This is where we fill-in the views with the contents of the cursor.
+        */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        // our view is pretty simple here --- just a text view
+        // our view is pretty simple here --- just a text view and image view
         // we'll keep the UI functional with a simple (and slow!) binding.
         ImageView posterView = (ImageView) view.findViewById(R.id.grid_item_movie_poster);
 
@@ -57,7 +58,18 @@ class MovieThumbnailAdapter extends CursorAdapter {
         // to the textVew before returning the item view
         TextView titleView = (TextView) view.findViewById(R.id.grid_item_movie_title);
         int movieTitleIdx = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_TITLE);
-        titleView.setText(cursor.getString(movieTitleIdx));
+
+        Long isFavorite = cursor.getLong(cursor.getColumnIndex(MovieContract.FavoritesEntry.COLUMN_MOVIE_ID));
+        if (isFavorite != 0L) {
+            titleView.setBackgroundColor(Color.YELLOW);
+
+            String title = context.getString(R.string.star_favorite)
+                  + " " + cursor.getString(movieTitleIdx);
+            titleView.setText(title);
+        } else {
+            titleView.setText(cursor.getString(movieTitleIdx));
+             titleView.setBackgroundColor(Color.TRANSPARENT);
+        }
     }
 
     /**
@@ -66,8 +78,13 @@ class MovieThumbnailAdapter extends CursorAdapter {
      */
     @Override
     public long getItemId(int position) {
+        long id;
         Cursor cursor = getCursor();
-        cursor.moveToPosition(position);
-        return cursor.getLong(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_ID));
+        if (cursor.moveToPosition(position)) {
+            id = cursor.getLong(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_ID));
+            return id;
+        } else {
+            return 0L;
+        }
     }
 }

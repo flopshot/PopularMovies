@@ -13,6 +13,16 @@ import com.example.sean.popularmovies.data.MovieContract.TrailerEntry;
  */
 
 public class MovieDbHelper extends SQLiteOpenHelper {
+    private static MovieDbHelper instance;
+
+    public static synchronized MovieDbHelper getHelper(Context context)
+    {
+        if (instance == null)
+            instance = new MovieDbHelper(context);
+
+        return instance;
+    }
+
     // If you change the database schema, you must increment the database version.
     private static final int DATABASE_VERSION = 3;
     static final String DATABASE_NAME = "movie.db";
@@ -79,8 +89,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
               " FOREIGN KEY (" + FavoritesEntry.COLUMN_MOVIE_ID + ") REFERENCES " +
               MovieEntry.TABLE_NAME + " (" + MovieEntry.COLUMN_MOVIE_ID + "), " +
 
-              " UNIQUE (" + TrailerEntry.COLUMN_MOVIE_ID +  ") ON CONFLICT REPLACE);";
-
+              " UNIQUE (" + FavoritesEntry.COLUMN_MOVIE_ID +  ") ON CONFLICT REPLACE);";
 
         sqLiteDatabase.execSQL(SQL_CREATE_MOVIE_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_REVIEW_TABLE);
@@ -93,7 +102,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
         super.onOpen(db);
         if (!db.isReadOnly()) {
             // Enable foreign key constraints
-            db.execSQL("PRAGMA foreign_keys=ON;");
+            db.execSQL("PRAGMA foreign_keys=ON; ");
         }
     }
 
