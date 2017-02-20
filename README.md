@@ -1,4 +1,3 @@
 # PopularMovies
-Stage 1 Submission
 
-In the Strings Resource Folder, you will find a string tag with name "api_key". Please put your api key from themoviedb.org in that tag.
+In the res/Values Folder, you will find an xml file named "api_key". Please put your api key from themoviedb.org in the string tag, "appid".
