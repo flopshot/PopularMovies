@@ -33,6 +33,7 @@ class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
             noNetworkIntent.setClassName(mContext
                   , NoNetworkActivity.class.getName()
             );
+            noNetworkIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mContext.startActivity(noNetworkIntent);
         } else {
             StoreMovieData movieData = new StoreMovieData(mContext);

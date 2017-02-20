@@ -12,7 +12,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -82,7 +81,6 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public void onStart() {
         super.onStart();
-        Log.w("Frag RequestDataBool", String.valueOf(requestDataBoolean));
         if (requestDataBoolean) {
             updateMovies();
         }
@@ -203,7 +201,6 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
     }
 
     void updateMovies() {
-        Log.w("MovieFragment", "Update Movies is Running");
         new FetchMoviesTask(getActivity().getApplicationContext()).execute();
     }
 

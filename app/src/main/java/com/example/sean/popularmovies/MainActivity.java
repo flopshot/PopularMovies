@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
                 if (key.equals("sort")) {
                     intentRestart.setClassName(getApplication(), MainActivity.class.getName());
+                    intentRestart.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     finish();
                     startActivity(intentRestart);
                 }
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             intentSettings.setClassName(getApplication()
                     ,SettingsActivity.class.getName());
+            intentSettings.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intentSettings);
             return true;
         }

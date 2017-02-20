@@ -59,7 +59,7 @@ class Utility {
 
     static String getFormattedDate(Long unixtime) {
         Date date = new Date(unixtime*1000L);
-        SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy", Locale.US);
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
         return sdf.format(date);
     }
     static BigDecimal round(float d, int decimalPlace) {

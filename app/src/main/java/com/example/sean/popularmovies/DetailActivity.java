@@ -53,6 +53,7 @@ public class DetailActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             intent.setClassName(getApplication()
                     , SettingsActivity.class.getName());
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
             return true;
         }

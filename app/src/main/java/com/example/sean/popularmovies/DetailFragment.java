@@ -13,7 +13,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -120,7 +119,6 @@ public class DetailFragment extends Fragment
                     c.moveToPosition(childPosition);
                     if (groupPosition == 0) {
                         url = c.getString(c.getColumnIndex(MovieContract.TrailerEntry.COLUMN_KEY));
-                        Log.w("YouTube URL", url);
                         mediaIntent.setData(Uri.parse(url));
                         startActivity(mediaIntent);
                     } else if (groupPosition ==1) {

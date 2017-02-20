@@ -2,7 +2,6 @@ package com.example.sean.popularmovies.data.api;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.example.sean.popularmovies.CheckNetworking;
 import com.example.sean.popularmovies.R;
@@ -87,7 +86,6 @@ public class RequestMovieData {
             }
             movieJsonStr = buffer.toString();
         } catch (IOException e) {
-            Log.e("RequestMovieData", "Error ", e);
             // If the code didn't successfully get the movie data, there's no point in attempting
             // to parse it.
             return null;
@@ -99,7 +97,6 @@ public class RequestMovieData {
                 try {
                     reader.close();
                 } catch (final IOException e) {
-                    Log.e("MovieFragment", "Error closing stream", e);
                 }
             }
         }

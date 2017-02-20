@@ -3,7 +3,6 @@ package com.example.sean.popularmovies;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +65,6 @@ import com.example.sean.popularmovies.data.MovieContract;
                 titleText.setText(trailerText);
                 return childView;
             case 1: //Review Child View
-                Log.w("Test Cursor", c.getString(c.getColumnIndex(MovieContract.ReviewEntry.COLUMN_AUTHOR)));
                 childView = LayoutInflater
                       .from(mContext).inflate(R.layout.review_item, parent, false);
                 TextView authorText = (TextView) childView.findViewById(R.id.review_item_author);
@@ -87,7 +85,6 @@ import com.example.sean.popularmovies.data.MovieContract;
     protected Cursor getChildrenCursor(Cursor groupCursor) {
         String cursorType = groupCursor.getString(groupCursor.getColumnIndex(mHeaderCol));
         Cursor childCursor;
-        Log.w("CursorType Child",cursorType);
         if (cursorType.equals(trailerHeader)) {
             String query = "SELECT _id, " + MovieContract.TrailerEntry.COLUMN_NAME
                   + ", " + MovieContract.TrailerEntry.COLUMN_KEY + " FROM "
