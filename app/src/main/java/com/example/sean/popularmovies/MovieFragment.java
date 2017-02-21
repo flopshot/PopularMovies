@@ -30,20 +30,30 @@ import com.example.sean.popularmovies.data.MovieContract;
  */
 public class MovieFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
     private MovieThumbnailAdapter mMovieAdapter;
+    FetchMoviesTask getNewMovieData;
     private  MyObserver myObserver;
     private Uri movieAndFavoritesTableUri;
-    private static final int MOVIE_LOADER = 0;
+    private static final int MOVIE_LOADER = 100;
     private Boolean requestDataBoolean = null;
+    private static LoaderManager sLoaderManager;
     private static LoaderManager.LoaderCallbacks sLoaderCallback;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Initiate Preference Manager for Async Task
         setHasOptionsMenu(true);
+
+        // Initiate Static LoaderManager to pass to AsyncTask
+        sLoaderManager = getLoaderManager();
+
         // Observe Content Provider Data Changes
         myObserver = new MyObserver(new Handler());
         sLoaderCallback = this;
+
+        //Create a single AsyncTask object
+        getNewMovieData = new FetchMoviesTask(getActivity().getApplicationContext(), sLoaderManager,
+              MOVIE_LOADER, sLoaderCallback);
+
         // URI of Movie Table
         movieAndFavoritesTableUri = MovieContract.MovieEntry.buildMovieWithFavorites();
         // Register ContentObserver in onCreate to catch changes in detail fragment
@@ -54,7 +64,7 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        getLoaderManager().initLoader(MOVIE_LOADER, null, sLoaderCallback);
+        sLoaderManager.initLoader(MOVIE_LOADER, null, sLoaderCallback);
         requestDataBoolean = ((MainActivity)getActivity()).requestDataBoolean;
         super.onActivityCreated(savedInstanceState);
     }
@@ -201,7 +211,7 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
     }
 
     void updateMovies() {
-        new FetchMoviesTask(getActivity().getApplicationContext()).execute();
+        getNewMovieData.execute();
     }
 
     public class MyObserver extends ContentObserver {
@@ -217,7 +227,7 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
 
         @Override
         public void onChange(boolean selfChange, Uri uri) {
-            getLoaderManager().restartLoader(MOVIE_LOADER, null, sLoaderCallback);
+            sLoaderManager.restartLoader(MOVIE_LOADER, null, sLoaderCallback);
         }
     }
 }

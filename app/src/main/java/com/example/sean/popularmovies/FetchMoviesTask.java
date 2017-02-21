@@ -3,6 +3,8 @@ package com.example.sean.popularmovies;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.app.LoaderManager;
+import android.widget.Toast;
 
 import com.example.sean.popularmovies.data.api.RequestMovieData;
 import com.example.sean.popularmovies.data.api.StoreMovieData;
@@ -10,19 +12,27 @@ import com.example.sean.popularmovies.data.api.StoreMovieData;
 /**
  * Refactored AsyncTask
  */
-class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
+class FetchMoviesTask extends AsyncTask<Void, String, Void> {
     //The Async Task generates a background thread which downloads the movie data from
     //The Movie DB api. The movie data comes in the form of a JSON string with movie titles
     //of Popular or Top Rated movies based on user preference
     private Context mContext;
+    private int mLoaderId;
+    private LoaderManager mManager;
+    private LoaderManager.LoaderCallbacks mLoaderCallback;
 
-    FetchMoviesTask(Context c) {
+    FetchMoviesTask(Context c, LoaderManager manager, int loaderId,
+                    LoaderManager.LoaderCallbacks loaderCallback) {
         this.mContext = c;
+        this.mManager = manager;
+        this.mLoaderId = loaderId;
+        this.mLoaderCallback = loaderCallback;
     }
 
     @Override
     protected Void doInBackground(Void... arg0) {
         //We pass the Movie DB query to the background thread
+        publishProgress(mContext.getResources().getString(R.string.movie_updates));
         RequestMovieData rMovies = new RequestMovieData(mContext);
         String popularMovies = rMovies.getMovieData(0, null);
         String topMovies = rMovies.getMovieData(1, null);
@@ -51,7 +61,17 @@ class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
     }
 
     @Override
+    protected void onProgressUpdate(String... values) {
+        super.onProgressUpdate(values);
+        Toast.makeText(mContext, values[0], Toast.LENGTH_LONG).show();
+    }
+
+    @Override
     protected void onPostExecute(Void aVoid) {
-        //
+        mManager.restartLoader(mLoaderId, null, mLoaderCallback);
+        Toast.makeText(mContext,
+                       mContext.getString(R.string.movie_updates_finish),
+                       Toast.LENGTH_LONG
+        ).show();
     }
 }

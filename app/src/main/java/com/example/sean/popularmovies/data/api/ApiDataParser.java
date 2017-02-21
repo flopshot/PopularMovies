@@ -15,7 +15,7 @@ class ApiDataParser {
     static final String TOP_LEVEL_ARRAY_LABEL = "results";
     static final String TOP_LEVEL_TRAILER_ARRAY_LABEL = "youtube";
     // This is the current URL that youtube uses to locate videos on their server
-    private static final String YOUTUBE_URL = "vnd.youtube://" ;
+    private static final String YOUTUBE_URL = "https://www.youtube.com/watch?v=" ;
     private static final String POSTER_IMAGE_AUTHORITY = "https://image.tmdb.org/t/p/w500";
     private static final String PLOT_LABEL = "overview";
     private static final String TRAILER_NAME_LABEL = "name";

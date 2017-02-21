@@ -1,5 +1,7 @@
 <resources>
     <!--Main Application Strings -->
+    <string name="movie_updates">Movie Update In Progress</string>
+    <string name="movie_updates_finish">Movie Update Complete</string>
     <string name="app_name">Popular Movies</string>
     <string name="movie_detail">Movie Details</string>
     <string name="action_settings">Settings</string>

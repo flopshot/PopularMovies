@@ -18,8 +18,8 @@ public class MainActivity extends AppCompatActivity {
     Intent intentSettings = new Intent();
     Intent intentRestart = new Intent();
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
-    SharedPreferences prefs, pref = null;
-    private static final String PREF_KEY = "requestNetworkData";
+    SharedPreferences prefs; //, pref = null;
+    // private static final String PREF_KEY = "requestNetworkData";
     Boolean requestDataBoolean = true;
 
     @Override
@@ -47,11 +47,14 @@ public class MainActivity extends AppCompatActivity {
         // If it did, then refresh the movie data over the network through an api call
         //      by setting "requestDataBoolean" to true.
         // The fragment will read this variable and call "updateMovies()"
-        pref = getSharedPreferences(PREF_KEY, MODE_PRIVATE);
-        if (pref != null) {
-            requestDataBoolean = null;
-            requestDataBoolean = pref.getBoolean(PREF_KEY, true);
-        }
+
+        // DISABLING API DATA CHECK. FOR NOW, APP WILL CALL updateMovies() on every MainActivity
+        // CREATION
+//        pref = getSharedPreferences(PREF_KEY, MODE_PRIVATE);
+//        if (pref != null) {
+//            requestDataBoolean = null;
+//            requestDataBoolean = pref.getBoolean(PREF_KEY, true);
+//        }
 
         // Create Fragment
         if (savedInstanceState == null) {
@@ -108,12 +111,13 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        pref = getSharedPreferences(PREF_KEY,MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean(PREF_KEY, isFinishing());
-        editor.apply();
-    }
+    // COMMENTING OUT AS PER LINE 51
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        pref = getSharedPreferences(PREF_KEY,MODE_PRIVATE);
+//        SharedPreferences.Editor editor = pref.edit();
+//        editor.putBoolean(PREF_KEY, isFinishing());
+//        editor.apply();
+//    }
 }
