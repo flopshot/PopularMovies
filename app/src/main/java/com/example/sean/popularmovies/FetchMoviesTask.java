@@ -20,22 +20,25 @@ class FetchMoviesTask extends AsyncTask<Void, String, Void> {
     private int mLoaderId;
     private LoaderManager mManager;
     private LoaderManager.LoaderCallbacks mLoaderCallback;
+    private String popularMovies;
+    private String topMovies;
+    private MovieFragment mMovieFragment;
 
     FetchMoviesTask(Context c, LoaderManager manager, int loaderId,
-                    LoaderManager.LoaderCallbacks loaderCallback) {
+                    LoaderManager.LoaderCallbacks loaderCallback, MovieFragment movieFragment) {
         this.mContext = c;
         this.mManager = manager;
         this.mLoaderId = loaderId;
         this.mLoaderCallback = loaderCallback;
+        this.mMovieFragment = movieFragment;
     }
 
     @Override
     protected Void doInBackground(Void... arg0) {
         //We pass the Movie DB query to the background thread
-        publishProgress(mContext.getResources().getString(R.string.movie_updates));
         RequestMovieData rMovies = new RequestMovieData(mContext);
-        String popularMovies = rMovies.getMovieData(0, null);
-        String topMovies = rMovies.getMovieData(1, null);
+        popularMovies = rMovies.getMovieData(0, null);
+        topMovies = rMovies.getMovieData(1, null);
         Intent noNetworkIntent;
 
         if(popularMovies.equals("No Network Connection") || topMovies.equals("No Network Connection")) {
@@ -46,6 +49,7 @@ class FetchMoviesTask extends AsyncTask<Void, String, Void> {
             noNetworkIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mContext.startActivity(noNetworkIntent);
         } else {
+            publishProgress(mContext.getResources().getString(R.string.movie_updates));
             StoreMovieData movieData = new StoreMovieData(mContext);
             String[] movieIds = movieData.insertIntoMovies(popularMovies, topMovies);
 
@@ -68,10 +72,14 @@ class FetchMoviesTask extends AsyncTask<Void, String, Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        mManager.restartLoader(mLoaderId, null, mLoaderCallback);
-        Toast.makeText(mContext,
-                       mContext.getString(R.string.movie_updates_finish),
-                       Toast.LENGTH_LONG
-        ).show();
+        if(!popularMovies.equals("No Network Connection")
+              && !topMovies.equals("No Network Connection")) {
+            if (mMovieFragment.isAdded())
+                mManager.restartLoader(mLoaderId, null, mLoaderCallback);
+                Toast.makeText(mContext,
+                      mContext.getString(R.string.movie_updates_finish),
+                      Toast.LENGTH_LONG
+                ).show();
+        }
     }
 }

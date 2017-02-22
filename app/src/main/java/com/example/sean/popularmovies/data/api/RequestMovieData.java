@@ -42,7 +42,7 @@ public class RequestMovieData {
     public String getMovieData(int queryType, @Nullable String movieId){
         //If there is no network connectivity, return the appropriate message
         CheckNetworking networkCheck = new CheckNetworking(mContext);
-        if(!networkCheck.haveNetworkConnection()) {
+        if(!networkCheck.hasNetworkConnection()) {
             return "No Network Connection";
         }
 

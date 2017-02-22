@@ -15,16 +15,28 @@ import android.view.MenuItem;
  * add setting preferences logic to obtain user settings.
  */
 public class MainActivity extends AppCompatActivity {
-    Intent intentSettings = new Intent();
-    Intent intentRestart = new Intent();
+    Intent intentSettings = null;
+    Intent intentRestart = null;
+    Intent intentToNoNetwork = null;
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
-    SharedPreferences prefs; //, pref = null;
-    // private static final String PREF_KEY = "requestNetworkData";
+    SharedPreferences prefs, pref = null;
+    private static final String PREF_KEY = "requestNetworkData";
     Boolean requestDataBoolean = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Check Network State
+        CheckNetworking networkCheck = new CheckNetworking(getApplicationContext());
+        if(!networkCheck.hasNetworkConnection()) {
+            intentToNoNetwork = new Intent();
+            intentToNoNetwork.setClassName(getApplication(), NoNetworkActivity.class.getName());
+            intentToNoNetwork.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY
+                  | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            finish();
+            startActivity(intentToNoNetwork);
+        }
+
         setContentView(R.layout.activity_main);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         PreferenceManager.setDefaultValues(this, R.xml.pref_settings, false);
@@ -33,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
                 if (key.equals("sort")) {
+                    intentRestart = new Intent();
                     intentRestart.setClassName(getApplication(), MainActivity.class.getName());
                     intentRestart.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     finish();
@@ -47,14 +60,11 @@ public class MainActivity extends AppCompatActivity {
         // If it did, then refresh the movie data over the network through an api call
         //      by setting "requestDataBoolean" to true.
         // The fragment will read this variable and call "updateMovies()"
-
-        // DISABLING API DATA CHECK. FOR NOW, APP WILL CALL updateMovies() on every MainActivity
-        // CREATION
-//        pref = getSharedPreferences(PREF_KEY, MODE_PRIVATE);
-//        if (pref != null) {
-//            requestDataBoolean = null;
-//            requestDataBoolean = pref.getBoolean(PREF_KEY, true);
-//        }
+        pref = getSharedPreferences(PREF_KEY, MODE_PRIVATE);
+        if (pref != null) {
+            requestDataBoolean = null;
+            requestDataBoolean = pref.getBoolean(PREF_KEY, true);
+        }
 
         // Create Fragment
         if (savedInstanceState == null) {
@@ -102,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
+            intentSettings = new Intent();
             intentSettings.setClassName(getApplication()
                     ,SettingsActivity.class.getName());
             intentSettings.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
@@ -111,13 +122,12 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // COMMENTING OUT AS PER LINE 51
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        pref = getSharedPreferences(PREF_KEY,MODE_PRIVATE);
-//        SharedPreferences.Editor editor = pref.edit();
-//        editor.putBoolean(PREF_KEY, isFinishing());
-//        editor.apply();
-//    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        pref = getSharedPreferences(PREF_KEY,MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean(PREF_KEY, isFinishing());
+        editor.apply();
+    }
 }

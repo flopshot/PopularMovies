@@ -48,6 +48,8 @@
             android:layout_alignStart="@id/detailReleaseDate"
             android:layout_alignLeft="@+id/detailReleaseDate"
             android:layout_width="wrap_content"
+            android:background="@android:color/transparent"
+            android:textColor="@android:color/black"
             android:textStyle="normal|bold" />
 
         <TextView
@@ -59,6 +61,8 @@
             android:layout_alignBottom="@+id/detailPoster"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:background="@android:color/transparent"
+            android:textColor="@android:color/black"
             android:textStyle="normal|bold" />
 
         <ImageView
@@ -82,6 +86,8 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/detailReleaseDate"
             android:id="@+id/detailPlot"
+            android:background="@android:color/transparent"
+            android:textColor="@android:color/black"
             android:textStyle="normal|bold" />
 
         <TextView
@@ -92,6 +98,8 @@
             android:layout_alignStart="@id/detailReleaseDateValue"
             android:layout_alignLeft="@+id/detailReleaseDateValue"
             android:layout_above="@+id/detailReleaseDateValue"
+            android:background="@android:color/transparent"
+            android:textColor="@android:color/black"
             android:id="@+id/detailRatingValue"/>
 
         <TextView
@@ -100,12 +108,16 @@
             android:layout_alignBottom="@+id/detailPoster"
             android:layout_toStartOf="@id/detailPoster"
             android:layout_toLeftOf="@+id/detailPoster"
+            android:background="@android:color/transparent"
+            android:textColor="@android:color/black"
             android:id="@+id/detailReleaseDateValue"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/detailPlotValue"
+            android:background="@android:color/transparent"
+            android:textColor="@android:color/black"
             android:layout_below="@+id/detailPlot"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"/>

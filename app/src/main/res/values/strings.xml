@@ -32,7 +32,7 @@
 
     <!--No Network Activity Strings-->
     <string name="NoNetworkMessage">You are not connected to a network.
-        \n Please connect and refresh</string>
+        \n Please Refresh</string>
 
     <!--Favorites Star Icon-->
     <string name="star_favorite">★</string>

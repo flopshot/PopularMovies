@@ -5,6 +5,7 @@
     android:ellipsize="end"
     android:textSize="20sp"
     android:background="@android:color/transparent"
+    android:textColor="@android:color/black"
     android:gravity="center|start"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

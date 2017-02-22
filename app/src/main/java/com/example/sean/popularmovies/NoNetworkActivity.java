@@ -1,8 +1,8 @@
 package com.example.sean.popularmovies;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -36,7 +36,9 @@ public class NoNetworkActivity extends AppCompatActivity {
         if (id == R.id.action_refresh) {
             intentMain.setClassName(getApplication()
                     ,MainActivity.class.getName());
-            intentMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intentMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+                  | Intent.FLAG_ACTIVITY_NEW_TASK
+                  | Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intentMain);
             return true;
         }

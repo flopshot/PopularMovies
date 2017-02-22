@@ -14,7 +14,7 @@ public class CheckNetworking {
         this.context=context;
     }
 
-    public Boolean haveNetworkConnection(){
+    public Boolean hasNetworkConnection(){
         ConnectivityManager cm =
                 (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 

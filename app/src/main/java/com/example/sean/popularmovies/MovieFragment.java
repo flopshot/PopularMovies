@@ -30,7 +30,7 @@ import com.example.sean.popularmovies.data.MovieContract;
  */
 public class MovieFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
     private MovieThumbnailAdapter mMovieAdapter;
-    FetchMoviesTask getNewMovieData;
+    // FetchMoviesTask getNewMovieData;
     private  MyObserver myObserver;
     private Uri movieAndFavoritesTableUri;
     private static final int MOVIE_LOADER = 100;
@@ -41,7 +41,7 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+        // setHasOptionsMenu(true); DISABLED REFRESH
 
         // Initiate Static LoaderManager to pass to AsyncTask
         sLoaderManager = getLoaderManager();
@@ -50,9 +50,9 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
         myObserver = new MyObserver(new Handler());
         sLoaderCallback = this;
 
-        //Create a single AsyncTask object
-        getNewMovieData = new FetchMoviesTask(getActivity().getApplicationContext(), sLoaderManager,
-              MOVIE_LOADER, sLoaderCallback);
+        //Create a single AsyncTask object DISABLED FOR TESTING
+//        getNewMovieData = new FetchMoviesTask(getActivity().getApplicationContext(), sLoaderManager,
+//              MOVIE_LOADER, sLoaderCallback);
 
         // URI of Movie Table
         movieAndFavoritesTableUri = MovieContract.MovieEntry.buildMovieWithFavorites();
@@ -93,6 +93,8 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
         super.onStart();
         if (requestDataBoolean) {
             updateMovies();
+            ((MainActivity)getActivity()).requestDataBoolean = false;
+            this.requestDataBoolean = false;
         }
     }
 
@@ -211,7 +213,8 @@ public class MovieFragment extends Fragment implements LoaderManager.LoaderCallb
     }
 
     void updateMovies() {
-        getNewMovieData.execute();
+        new FetchMoviesTask(getActivity(), sLoaderManager,
+              MOVIE_LOADER, sLoaderCallback, this).execute();
     }
 
     public class MyObserver extends ContentObserver {
